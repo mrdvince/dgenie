@@ -1,4 +1,5 @@
 from rest_framework import exceptions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -62,3 +63,16 @@ class LoginAPIView(APIView):
 
 
 login = LoginAPIView.as_view()
+
+
+class UserAPIView(APIView):
+    authentication_classes = [JWTAuth]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+
+user_api_view = UserAPIView.as_view()
