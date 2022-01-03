@@ -76,3 +76,17 @@ class UserAPIView(APIView):
 
 
 user_api_view = UserAPIView.as_view()
+
+
+class LogoutAPIView(APIView):
+    authentication_classes = [JWTAuth]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, _):
+        response = Response()
+        response.delete_cookie(key="jwt")
+        response.data = {"message": "Logged out successfully"}
+        return response
+
+
+logout = LogoutAPIView.as_view()
