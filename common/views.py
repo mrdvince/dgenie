@@ -1,8 +1,10 @@
-from rest_framework.views import APIView
 from rest_framework import exceptions
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from core.models import User
+
+from .auth import JWTAuth
 from .serializers import UserSerializer
 
 
@@ -38,18 +40,25 @@ class RegisterAPIView(APIView):
 
 register = RegisterAPIView.as_view()
 
+
 class LoginAPIView(APIView):
-    def post(self,request):
+    def post(self, request):
         email = request.data["email"]
         password = request.data["password"]
         user = User.objects.filter(email=email).first()
-        
+
         if user is None:
             raise exceptions.AuthenticationFailed("User not found!")
-        
+
         if not user.check_password(password):
             raise exceptions.AuthenticationFailed("Incorrect password!")
-        
-        return Response(UserSerializer(user).data)
-    
+
+        token = JWTAuth.generate_token(user.id)
+
+        response = Response()
+        response.set_cookie(key="jwt", value=token, httponly=True)
+        response.data = {"message": "Logged in successfully"}
+        return response
+
+
 login = LoginAPIView.as_view()
