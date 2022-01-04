@@ -17,7 +17,7 @@ SECRET_KEY = secrets.token_urlsafe(64)
 DEBUG = os.getenv("DJANGO_DEBUG", True)
 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#allowed-hosts
-HOSTS =  os.getenv("DJANGO_HOSTS")
+HOSTS = os.getenv("DJANGO_HOSTS")
 ALLOWED_HOSTS = [] if not HOSTS else HOSTS
 
 
@@ -175,7 +175,7 @@ AUTH_USER_MODEL = "core.User"
 # SECURITY
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
-# TODO: Uncomment the following line to force all requests to use SSL, 
+# TODO: Uncomment the following line to force all requests to use SSL,
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
 SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", default=False)
