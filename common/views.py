@@ -90,3 +90,37 @@ class LogoutAPIView(APIView):
 
 
 logout = LogoutAPIView.as_view()
+
+
+class ProfileInfoAPIView(APIView):
+    authentication_classes = [JWTAuth]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk=None):
+        user = request.user
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+
+user_info = ProfileInfoAPIView.as_view()
+
+
+class ProfilePasswordAPIView(APIView):
+    authentication_classes = [JWTAuth]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, pk=None):
+        user = request.user
+        data = request.data
+        if not user.check_password(data["old_password"]):
+            raise exceptions.AuthenticationFailed("Incorrect password!")
+        if data["new_password"] != data["new_password_confirm"]:
+            raise exceptions.APIException("Passwords do not match")
+        user.set_password(data["new_password"])
+        user.save()
+        return Response({"message": "Password changed successfully"})
+
+
+user_password = ProfilePasswordAPIView.as_view()
