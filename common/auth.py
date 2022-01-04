@@ -4,8 +4,8 @@ import jwt
 from rest_framework import exceptions
 from rest_framework.authentication import BaseAuthentication
 
+from config import settings
 from core.models import User
-from dgenie import settings
 
 
 class JWTAuth(BaseAuthentication):

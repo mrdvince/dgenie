@@ -1,5 +1,4 @@
 from rest_framework import exceptions
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -23,6 +22,8 @@ def valid_email(email):
 
 
 class RegisterAPIView(APIView):
+    permission_classes = []
+
     def post(self, request):
         data = request.data
 
@@ -43,6 +44,8 @@ register = RegisterAPIView.as_view()
 
 
 class LoginAPIView(APIView):
+    permission_classes = []
+
     def post(self, request):
         email = request.data["email"]
         password = request.data["password"]
@@ -67,7 +70,6 @@ login = LoginAPIView.as_view()
 
 class UserAPIView(APIView):
     authentication_classes = [JWTAuth]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
@@ -80,7 +82,6 @@ user_api_view = UserAPIView.as_view()
 
 class LogoutAPIView(APIView):
     authentication_classes = [JWTAuth]
-    permission_classes = [IsAuthenticated]
 
     def post(self, _):
         response = Response()
@@ -94,7 +95,6 @@ logout = LogoutAPIView.as_view()
 
 class ProfileInfoAPIView(APIView):
     authentication_classes = [JWTAuth]
-    permission_classes = [IsAuthenticated]
 
     def put(self, request, pk=None):
         user = request.user
@@ -109,7 +109,6 @@ user_info = ProfileInfoAPIView.as_view()
 
 class ProfilePasswordAPIView(APIView):
     authentication_classes = [JWTAuth]
-    permission_classes = [IsAuthenticated]
 
     def put(self, request, pk=None):
         user = request.user
