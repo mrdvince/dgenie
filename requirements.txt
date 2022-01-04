@@ -10,3 +10,5 @@ whitenoise==5.3.0
 PyJWT==2.3.0
 django-cors-headers==3.10.1
 Faker==11.1.0
+django-redis==5.2.0
+argon2-cffi==21.3.0
